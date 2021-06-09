@@ -37,6 +37,9 @@ class User(AbstractUser):
         verbose_name_plural = 'Users'
         ordering = ('username',)
 
+    def __str__(self):
+        return self.email
+
 
 class Genre(models.Model):
     name = models.CharField('Название жанра', unique=True, max_length=20)
@@ -105,6 +108,9 @@ class Review(models.Model):
         verbose_name_plural = 'Reviews'
         ordering = ('-pub_date',)
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     review = models.ForeignKey(
@@ -126,3 +132,6 @@ class Comment(models.Model):
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
         ordering = ('-pub_date',)
+
+    def __str__(self):
+        return self.review.title
