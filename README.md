@@ -9,25 +9,35 @@
 3. Пользователь отправляет запрос с параметрами *email* и *confirmation_code* на */auth/token/*, в ответе на запрос ему приходит *token* (JWT-токен).
 4. При желании пользователь отправляет PATCH-запрос на */users/me/* и заполняет поля в своём профайле (описание полей — в документации).
 
-Подробная API документация находится по адресу /redoc
+Проект написан на Django с использованием DRF. В качестве базы данных используется PostgreSQL. 
 
-### Установка
+### Установка проекта
 Проект собран в Docker 20.10.06 и содержит три образа:
 - web - образ проекта
 - postgres - образ базы данных PostgreSQL v 12.04
 - nginx - образ web сервера nginx 
 
 #### Запуск проекта:
-- Произвести установку Docker
-- Выполнить команду docker pull glukosoft/yamdb:0.1
+- Первоначально необходимо установить Docker.
+  Подробную документацию смотрите на официальном сайте: <https://docs.docker.com/engine/install/ubuntu/>
+
+- Скачивание образа из dockerhub:
+  **docker pull glukosoft/yamdb:0.1**
+
+- Для запуска контейнера выполните команду:
+  **docker-compose up**
+
+- Процесс миграции можно посмотреть выполнив команду:
+  **docker-compose logs -f --tail 100 web**
 
 #### Первоначальная настройка Django:
-- docker-compose exec web python manage.py migrate --noinput
-- docker-compose exec web python manage.py collectstatic --no-input 
+- После запуска контейнера, необходимо произвести первоначальные настройки Django и создать суперюзера.
+Для этого выполните команду: **docker-compose exec web sh setup_server.sh**
 
 #### Загрузка тестовой фикстуры в базу:
-docker-compose exec web python manage.py loaddata fixtures.json
+- Для тестирования сервиса можно воспользоваться подготовленным дампом, для загрузки его выполните команду:
+**docker-compose exec web python manage.py loaddata fixtures.json**
 
-#### Создание суперпользователя:
-- docker-compose exec web python manage.py createsuperuser
+После установки пройдите по адресу: <http://127.0.0.1/admin/> и убедитесь, что админ панель доступна.
 
+Подробная документация по работе с API сервиса доступна по адресу <http://127.0.0.1/redoc/>
